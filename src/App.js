@@ -6,15 +6,10 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: [
-        { description: 'Workout', isCompleted: true },
-        { description: 'Do Bloc checkpoint React To-Do: States and Prop', isCompleted: false },
-        { description: 'Purchase a t-shirt', isCompleted: false },
-        { description: 'Eat ice-cream', isCompleted: true }
-      ],
-      newTodoDescription: ' '
-    };
-  }
+      todos: [],
+ newTodoDescription: ''
+  };
+}
 
   handleChange(e) {
     this.setState({ newTodoDescription: e.target.value })
@@ -30,8 +25,14 @@ class App extends Component {
   toggleComplete(index) {
     const todos = this.state.todos.slice();
     const todo = todos[index];
-    todo.isCompleted = todo.iscCompleted ? false : true;
+    todo.isCompleted = todo.isCompleted ? false : true;
     this.setState({ todos: todos });
+  }
+
+  removeTodo(deleteIndex) {
+    this.setState({
+      todos: this.state.todos.filter((todo, index) => index !== deleteIndex)
+    });
   }
 
   render() {
@@ -39,9 +40,9 @@ class App extends Component {
       <div className="App">
         <ul>
           { this.state.todos.map( (todo, index) =>
-            <ToDo key={ index } description={ todo.description } isCompleted= { todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) } />
+            <ToDo key={ index } description={ todo.description } isCompleted= { todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) } removeTodo = { () =>this.removeTodo(index) } />
           )}
-       </ul>
+        </ul>
        <form onSubmit= { (e) => this.handleSubmit (e) }>
          <input type ="text" value={ this.state.newTodoDescription } onChange ={ (e) => this.handleChange(e) } />
          <input type="submit" />
@@ -50,5 +51,6 @@ class App extends Component {
     );
   }
 }
+
 
 export default App;
